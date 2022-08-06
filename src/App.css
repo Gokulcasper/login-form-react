@@ -47,6 +47,14 @@ input {
   border: 0.5 solid gray;
 }
 
+p {
+  margin-top: -2px;
+  color: #d10000;
+  font-size: 22px;
+  font-weight: 500;
+  margin-left: 50px;
+}
+
 button {
   padding: 15px;
   border-radius: 10px;
