@@ -30,41 +30,52 @@ const App = () => {
     }
   }, [formError]);
 
-  const validate = (value) => {
-    const error = {};
-    const regexUsername = "^[A-Za-z0-9]{3,16}$";
-    const regexEmail =
-      "^[a-zA-Z0-9.! #$%&'*+/=? ^_`{|}~-]+@[a-zA-Z0-9-]+(?:. [a-zA-Z0-9-]+)*$";
-    const regexPassword =
-      "^(?=.{8,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+*!=]).*$";
-    if (!value.username) {
-      error.username = "Username is required!";
-    } else if (!regexUsername.test(value.username)) {
-      error.email =
-        "Username should be 3-15 characters & not include special character!";
+  const validate = (values) => {
+    const errors = {};
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    // const regexUsername = "^[A-Za-z0-9]{3,16}$";
+    // const regexEmail =
+    //   "^[a-zA-Z0-9.! #$%&'*+/=? ^_`{|}~-]+@[a-zA-Z0-9-]+(?:. [a-zA-Z0-9-]+)*$";
+    // const regexPassword =
+    //   "^(?=.{8,20})(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+*!=]).*$";
+    if (!values.username) {
+      errors.username = "Username is required!";
     }
-    if (!value.email) {
-      error.email = "Email is required!";
-    } else if (!regexEmail.test(value.email)) {
-      error.email = "It shouldnot be a valid email address!";
-    }
-    if (!value.password) {
-      error.password = "Password is required!";
-    } else if (!regexPassword.test(value.password)) {
-      error.email =
-        "Password should be above 8 characters & include atleast 1 uppercase , 1 number , 1 special character!";
-    }
-    // if (!value.password) {
-    //   error.confirmpassword = "ConfirmPassword is required!";
+    // else if (!regexUsername.test(values.username)) {
+    //   error.username =
+    //     "Username should be 3-15 characters & not include special character!";
     // }
-    return error;
+    if (!values.email) {
+      errors.email = "Email is required!";
+    } else if (!regex.test(values.email)) {
+      errors.email = "This is not a valid email format!";
+    }
+    if (!values.password) {
+      errors.password = "Password is required";
+    } else if (values.password.length < 4) {
+      errors.password = "Password must be more than 4 characters";
+    } else if (values.password.length > 10) {
+      errors.password = "Password cannot exceed more than 10 characters";
+    }
+    return errors;
   };
+
+  // else if (!regexPassword.test(values.password)) {
+  //   error.password =
+  //     "Password should be above 8 characters & include atleast 1 uppercase , 1 number , 1 special character!";
+  // }
+  // if (!values.password) {
+  //   error.confirmpassword = "ConfirmPassword is required!";
+  // }
 
   return (
     <div className="container">
-      Object.keys(formError).length === 0 && isSubmit ? (
-      <div className="ui message success">Signed in Successfully</div>
-      <pre>{JSON.stringify(formValue, undefined, 2)}</pre>)
+      {Object.keys(formError).length === 0 && isSubmit ? (
+        <div className="ui message success">Signed in successfully</div>
+      ) : (
+        <pre>{JSON.stringify(formValue, undefined, 2)}</pre>
+      )}
+
       <form onSubmit={handleSubmit}>
         <h1>Login Form</h1>
         <div className="ui underline"></div>
